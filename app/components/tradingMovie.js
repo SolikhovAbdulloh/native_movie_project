@@ -1,4 +1,4 @@
-import { Dimensions, Text, View } from "react-native";
+import { Dimensions, Text, TouchableOpacity } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import MovieCard from "../components/movie-card";
 export default function TradingMovie({ trading }) {
@@ -6,7 +6,9 @@ export default function TradingMovie({ trading }) {
   const itemWidth = width;
   const sideSpacing = (width - itemWidth) / 1;
   return (
-    <View className="mb-10">
+    <TouchableOpacity
+      className="mb-10"
+    >
       <Text className="text-[white] mb-5 text-xl font-bold mx-4">
         Trading Movie
       </Text>
@@ -25,6 +27,6 @@ export default function TradingMovie({ trading }) {
         }}
         renderItem={({ item }) => <MovieCard item={item} width={itemWidth} />}
       />
-    </View>
+    </TouchableOpacity>
   );
 }

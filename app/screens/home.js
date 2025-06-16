@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { Image, ScrollView, View } from "react-native";
 import { MagnifyingGlassIcon } from "react-native-heroicons/outline";
+import * as Progress from "react-native-progress";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   fetchPopularMovie,
@@ -14,6 +15,7 @@ import TradingMovie from "../components/tradingMovie";
 import UpdatingMovie from "../components/updatingMovie";
 export default function Home() {
   const [trading, setTrading] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState([]);
   const [toprated, setTopRated] = useState([]);
   const [popular, setPopular] = useState([]);
@@ -39,6 +41,7 @@ export default function Home() {
     getTradingmovie();
     getTopRetedMovie();
     getUpdatingMovie();
+    setLoading(false);
   }, []);
 
   return (
@@ -47,26 +50,36 @@ export default function Home() {
         <StatusBar style="light" />
         <View className="flex-row justify-between items-center mx-6 mt-4">
           <Image
-            className="w-[60px] h-[60px]"
+            className="w-[50px] h-[50px]"
             source={require("../assets/images/logo.png")}
           />
           <MagnifyingGlassIcon color={"white"} size={30} strokeWidth={2} />
         </View>
       </SafeAreaView>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 30 }}
-      >
-        {trading.length > 0 && <TradingMovie trading={trading} />}
-        {updating.length > 0 && (
-          <UpdatingMovie updating={updating.reverse()} title="Updating Movie" />
-        )}
 
-        {popular.length > 0 && (
-          <UpdatingMovie updating={popular} title="Popular movie" />
-        )}
-        {toprated.length > 0 && <TopRatedMovie TopRate={toprated} />}
-      </ScrollView>
+      {loading ? (
+        <View className="justify-center items-center flex-1">
+          <Progress.CircleSnail color={["red", "green", "blue"]} />
+        </View>
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 30 }}
+        >
+          {trading.length > 0 && <TradingMovie trading={trading} />}
+          {updating.length > 0 && (
+            <UpdatingMovie
+              updating={updating.reverse()}
+              title="Updating Movie"
+            />
+          )}
+
+          {popular.length > 0 && (
+            <UpdatingMovie updating={popular} title="Popular movie" />
+          )}
+          {toprated.length > 0 && <TopRatedMovie TopRate={toprated} />}
+        </ScrollView>
+      )}
     </View>
   );
 }
