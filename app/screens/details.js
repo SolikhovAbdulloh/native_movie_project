@@ -1,11 +1,11 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import {
   Dimensions,
   Image,
   SafeAreaView,
   ScrollView,
+  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -32,16 +32,16 @@ export default function Details() {
   async function getDetails() {
     setLoading(true);
     const data = await fetchMovieDetails(item.id);
-    setMovie(data);
+    item && setMovie(data);
     setLoading(false);
   }
   async function getCreditis() {
     const data = await fetchMovieCredits(item.id);
-    setCast(data.cast);
+    item && setCast(data.cast);
   }
   async function getSimilar() {
     const data = await fetchMovieSimilar(item.id);
-    setSimilar(data.results);
+    item && setSimilar(data.results);
   }
 
   const { width, height } = Dimensions.get("window");
@@ -51,8 +51,11 @@ export default function Details() {
     getSimilar();
   }, [item]);
   return (
-    <View className="flex-1 bg-slate-900 justify-center">
-      <ScrollView>
+    <ScrollView
+      contentContainerStyle={{ paddingBottom: 20 }}
+      className={"flex-1 bg-slate-900"}
+    >
+      <View className={"w-full"}>
         <SafeAreaView className="flex-row z-30 px-6 absolute w-full justify-between items-center">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <ChevronLeftIcon size={35} color="white" strokeWidth={3.5} />
@@ -66,7 +69,7 @@ export default function Details() {
           </TouchableOpacity>
         </SafeAreaView>
         {isloading ? (
-          <View className="items-center justify-center flex-1 h-[500px]">
+          <View className={"items-center justify-center flex-1 h-[500px]"}>
             <Progress.CircleSnail
               borderWidth={10}
               color={["white", "red", "green", "blue"]}
@@ -76,18 +79,20 @@ export default function Details() {
           <View>
             <Image
               source={{ uri: Image500(movie.poster_path) }}
-              style={{ width, height: height * 0.6 }}
-            />
-            <LinearGradient
-              colors={["transparent", "#000000cc", "#000000", "#000743"]}
-              start={{ x: 0.5, y: 0 }}
-              style={{ width, height: height * 0.4 }}
-              end={{ x: 0.5, y: 1 }}
-              className="absolute bottom-0"
+              style={{ width, height: height * 0.5 }}
             />
           </View>
         )}
-      </ScrollView>
-    </View>
+      </View>
+      <View className={"space-y-4"}>
+        <Text className="text-white text-3xl text-center pt-2 mt-[-40px] font-bold tracking-widest">
+          {movie?.title}
+        </Text>
+        <Text className="text-white text-center font-semibold mt-2 text-base">
+          {movie?.status} * {movie.release_date.split(" - ")[0]} *{" "}
+          {movie.runtime} min
+        </Text>
+      </View>
+    </ScrollView>
   );
 }
