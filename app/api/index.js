@@ -31,3 +31,22 @@ export const Image350 = (posterPath) => {
 export const Image185 = (posterPath) => {
   return posterPath ? "https://image.tmdb.org/t/p/w185" + posterPath : null;
 };
+export const movieDetail = (id) => `${base_url}/movie/${id}?api_key=${api_key}`;
+
+export const movieCredits = (id) =>
+  `${base_url}/movie/${id}/credits?api_key=${api_key}`;
+
+export const similarMovie = (id) =>
+  `${base_url}/movie/${id}/similar?api_key=${api_key}`;
+
+export const fetchMovieDetails = (id) => {
+  return ApiRequest(movieDetail(id));
+};
+
+export const fetchMovieCredits = (id) => {
+  return ApiRequest(movieCredits(id));
+};
+
+export const fetchMovieSimilar = (id) => {
+  return ApiRequest(similarMovie(id));
+};

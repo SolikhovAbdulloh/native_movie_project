@@ -15,13 +15,15 @@ import TradingMovie from "../components/tradingMovie";
 import UpdatingMovie from "../components/updatingMovie";
 export default function Home() {
   const [trading, setTrading] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [updating, setUpdating] = useState([]);
   const [toprated, setTopRated] = useState([]);
   const [popular, setPopular] = useState([]);
   const getTradingmovie = async () => {
+    setLoading(true);
     const data = await fetchTrendingMovie();
     setTrading(data.results);
+    setLoading(false);
   };
   const getPopularMovie = async () => {
     const data = await fetchPopularMovie();
@@ -29,7 +31,6 @@ export default function Home() {
   };
   const getUpdatingMovie = async () => {
     const data = await fetchUpcomingMovie();
-
     setUpdating(data.results);
   };
   const getTopRetedMovie = async () => {
@@ -41,7 +42,6 @@ export default function Home() {
     getTradingmovie();
     getTopRetedMovie();
     getUpdatingMovie();
-    setLoading(false);
   }, []);
 
   return (
@@ -59,7 +59,10 @@ export default function Home() {
 
       {loading ? (
         <View className="justify-center items-center flex-1">
-          <Progress.CircleSnail color={["red", "green", "blue"]} />
+          <Progress.CircleSnail
+            borderWidth={10}
+            color={["red", "green", "blue"]}
+          />
         </View>
       ) : (
         <ScrollView
