@@ -1,6 +1,7 @@
+import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { Image, ScrollView, View } from "react-native";
+import { Image, ScrollView, TouchableOpacity, View } from "react-native";
 import { MagnifyingGlassIcon } from "react-native-heroicons/outline";
 import * as Progress from "react-native-progress";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,6 +20,9 @@ export default function Home() {
   const [updating, setUpdating] = useState([]);
   const [toprated, setTopRated] = useState([]);
   const [popular, setPopular] = useState([]);
+
+  const navigation = useNavigation();
+
   const getTradingmovie = async () => {
     setLoading(true);
     const data = await fetchTrendingMovie();
@@ -53,7 +57,9 @@ export default function Home() {
             className="w-[50px] h-[50px]"
             source={require("../assets/images/logo.png")}
           />
-          <MagnifyingGlassIcon color={"white"} size={30} strokeWidth={2} />
+          <TouchableOpacity onPress={() => navigation.navigate("Search")}>
+            <MagnifyingGlassIcon color={"white"} size={30} strokeWidth={2} />
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
 
